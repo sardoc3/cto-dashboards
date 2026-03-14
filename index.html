@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CTO Dashboard - Sardeep</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            color: #eaeaea;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 1400px; margin: 0 auto; }
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: rgba(0, 212, 170, 0.1);
+            border-radius: 16px;
+            border: 1px solid rgba(0, 212, 170, 0.3);
+        }
+        h1 {
+            color: #00d4aa;
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+        }
+        .subtitle {
+            color: #a0a0a0;
+            font-size: 1rem;
+        }
+        .timestamp {
+            color: #666;
+            font-size: 0.85rem;
+            margin-top: 8px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 32px rgba(0, 212, 170, 0.1);
+        }
+        .card h2 {
+            color: #00d4aa;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .metric:last-child { border-bottom: none; }
+        .metric-label {
+            color: #a0a0a0;
+            font-size: 0.9rem;
+        }
+        .metric-value {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .status.online {
+            background: rgba(0, 212, 170, 0.15);
+            color: #00d4aa;
+        }
+        .status.offline {
+            background: rgba(255, 71, 87, 0.15);
+            color: #ff4757;
+        }
+        .status.warning {
+            background: rgba(255, 193, 7, 0.15);
+            color: #ffc107;
+        }
+        .status::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+        .project-item {
+            padding: 16px;
+            margin: 12px 0;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            border-left: 4px solid #00d4aa;
+            transition: background 0.2s;
+        }
+        .project-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+        .project-name {
+            font-weight: 600;
+            margin-bottom: 6px;
+            font-size: 1.1rem;
+        }
+        .project-meta {
+            font-size: 0.85rem;
+            color: #888;
+        }
+        .project-status {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+        .status-live {
+            background: rgba(0, 212, 170, 0.2);
+            color: #00d4aa;
+        }
+        .status-dev {
+            background: rgba(33, 150, 243, 0.2);
+            color: #2196f3;
+        }
+        .status-planning {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+        }
+        .cron-job {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            margin: 8px 0;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+        .cron-name {
+            font-weight: 500;
+        }
+        .cron-schedule {
+            color: #888;
+            font-size: 0.8rem;
+        }
+        .icon {
+            font-size: 1.3rem;
+        }
+        .quick-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 16px;
+        }
+        .quick-link {
+            padding: 8px 16px;
+            background: rgba(0, 212, 170, 0.1);
+            border: 1px solid rgba(0, 212, 170, 0.3);
+            border-radius: 8px;
+            color: #00d4aa;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+        .quick-link:hover {
+            background: rgba(0, 212, 170, 0.2);
+        }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #666;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏗️ CTO Dashboard</h1>
+            <div class="subtitle">Development Agency Operations Center</div>
+            <div class="timestamp">Last updated: 2026-03-14 10:45 PDT</div>
+        </header>
+        
+        <div class="grid">
+            <!-- System Status -->
+            <div class="card">
+                <h2><span class="icon">🖥️</span>System Status</h2>
+                <div class="metric">
+                    <span class="metric-label">OpenClaw Gateway</span>
+                    <span class="status online">Online</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">ACP Backend</span>
+                    <span class="status online">acpx Ready</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Port</span>
+                    <span class="metric-value">18789</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Active Subagents</span>
+                    <span class="metric-value">0</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Session Mode</span>
+                    <span class="metric-value">per-channel-peer</span>
+                </div>
+            </div>
+
+            <!-- ACP Agents -->
+            <div class="card">
+                <h2><span class="icon">🤖</span>ACP Agents Available</h2>
+                <div class="metric">
+                    <span class="metric-label">Claude Code</span>
+                    <span class="status online">Ready</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Codex</span>
+                    <span class="status online">Ready</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Gemini CLI</span>
+                    <span class="status online">Ready</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Max Concurrent</span>
+                    <span class="metric-value">4 sessions</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Session TTL</span>
+                    <span class="metric-value">60 minutes</span>
+                </div>
+            </div>
+
+            <!-- Active Projects -->
+            <div class="card">
+                <h2><span class="icon">📁</span>Active Projects</h2>
+                <div class="project-item">
+                    <div class="project-name">🚀 MealMaster</div>
+                    <div class="project-meta">Client: MealMaster MVP</div>
+                    <div class="project-meta">Stack: React + Node + Supabase</div>
+                    <span class="project-status status-live">● LIVE</span>
+                </div>
+                <div class="quick-links">
+                    <a href="#" class="quick-link">View Specs</a>
+                    <a href="#" class="quick-link">GitHub Repo</a>
+                </div>
+            </div>
+
+            <!-- Cron Jobs -->
+            <div class="card">
+                <h2><span class="icon">⏰</span>Scheduled Tasks</h2>
+                <div class="cron-job">
+                    <div>
+                        <div class="cron-name">CTO Backup Auto-Sync</div>
+                        <div class="cron-schedule">Every 4 hours</div>
+                    </div>
+                    <span class="status online">Active</span>
+                </div>
+                <div class="cron-job">
+                    <div>
+                        <div class="cron-name">Weekly Project Review</div>
+                        <div class="cron-schedule">Mon 9:00 AM PDT</div>
+                    </div>
+                    <span class="status online">Active</span>
+                </div>
+                <div class="cron-job">
+                    <div>
+                        <div class="cron-name">Memory Maintenance</div>
+                        <div class="cron-schedule">Sun 8:00 PM PDT</div>
+                    </div>
+                    <span class="status online">Active</span>
+                </div>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="card">
+                <h2><span class="icon">📊</span>Quick Stats</h2>
+                <div class="metric">
+                    <span class="metric-label">Total Clients</span>
+                    <span class="metric-value">1</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Active Cron Jobs</span>
+                    <span class="metric-value">3</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Documentation Files</span>
+                    <span class="metric-value">5</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Workspace Backup</span>
+                    <span class="status online">Auto-sync</span>
+                </div>
+            </div>
+
+            <!-- Channel Status -->
+            <div class="card">
+                <h2><span class="icon">💬</span>Channel Status</h2>
+                <div class="metric">
+                    <span class="metric-label">Telegram</span>
+                    <span class="status online">Connected</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">WhatsApp</span>
+                    <span class="status offline">Not Configured</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Discord</span>
+                    <span class="status offline">Not Configured</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">DM Policy</span>
+                    <span class="metric-value">Allowlist</span>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>🏗️ Sardeep CTO Dashboard | Auto-generated by OpenClaw</p>
+            <p>Refresh this page for latest status</p>
+        </footer>
+    </div>
+</body>
+</html>
