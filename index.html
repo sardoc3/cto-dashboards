@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="300">
     <title>CTO Dashboard - Sardeep</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -14,6 +15,16 @@
             padding: 20px;
         }
         .container { max-width: 1400px; margin: 0 auto; }
+        .security-banner {
+            background: rgba(0, 212, 170, 0.1);
+            border: 1px solid rgba(0, 212, 170, 0.3);
+            border-radius: 12px;
+            padding: 12px 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #00d4aa;
+        }
         header {
             text-align: center;
             margin-bottom: 40px;
@@ -143,10 +154,6 @@
             background: rgba(33, 150, 243, 0.2);
             color: #2196f3;
         }
-        .status-planning {
-            background: rgba(255, 193, 7, 0.2);
-            color: #ffc107;
-        }
         .cron-job {
             display: flex;
             justify-content: space-between;
@@ -167,24 +174,25 @@
         .icon {
             font-size: 1.3rem;
         }
-        .quick-links {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 16px;
+        .data-policy {
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 20px;
         }
-        .quick-link {
-            padding: 8px 16px;
-            background: rgba(0, 212, 170, 0.1);
-            border: 1px solid rgba(0, 212, 170, 0.3);
-            border-radius: 8px;
-            color: #00d4aa;
-            text-decoration: none;
-            font-size: 0.85rem;
-            transition: all 0.2s;
+        .data-policy h3 {
+            color: #ffc107;
+            margin-bottom: 10px;
+            font-size: 1rem;
         }
-        .quick-link:hover {
-            background: rgba(0, 212, 170, 0.2);
+        .data-policy ul {
+            margin-left: 20px;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        .data-policy li {
+            margin: 6px 0;
         }
         footer {
             text-align: center;
@@ -197,10 +205,14 @@
 </head>
 <body>
     <div class="container">
+        <div class="security-banner">
+            🔒 Security Notice: This dashboard displays ONLY non-sensitive operational data. No API keys, tokens, or private information is ever shown.
+        </div>
+        
         <header>
             <h1>🏗️ CTO Dashboard</h1>
             <div class="subtitle">Development Agency Operations Center</div>
-            <div class="timestamp">Last updated: 2026-03-14 10:45 PDT</div>
+            <div class="timestamp">Last updated: 2026-03-14 10:47 PDT</div>
         </header>
         
         <div class="grid">
@@ -214,10 +226,6 @@
                 <div class="metric">
                     <span class="metric-label">ACP Backend</span>
                     <span class="status online">acpx Ready</span>
-                </div>
-                <div class="metric">
-                    <span class="metric-label">Port</span>
-                    <span class="metric-value">18789</span>
                 </div>
                 <div class="metric">
                     <span class="metric-label">Active Subagents</span>
@@ -259,17 +267,13 @@
                 <h2><span class="icon">📁</span>Active Projects</h2>
                 <div class="project-item">
                     <div class="project-name">🚀 MealMaster</div>
-                    <div class="project-meta">Client: MealMaster MVP</div>
+                    <div class="project-meta">Status: Production Live</div>
                     <div class="project-meta">Stack: React + Node + Supabase</div>
                     <span class="project-status status-live">● LIVE</span>
                 </div>
-                <div class="quick-links">
-                    <a href="#" class="quick-link">View Specs</a>
-                    <a href="#" class="quick-link">GitHub Repo</a>
-                </div>
             </div>
 
-            <!-- Cron Jobs -->
+            <!-- Scheduled Tasks -->
             <div class="card">
                 <h2><span class="icon">⏰</span>Scheduled Tasks</h2>
                 <div class="cron-job">
@@ -293,6 +297,13 @@
                     </div>
                     <span class="status online">Active</span>
                 </div>
+                <div class="cron-job">
+                    <div>
+                        <div class="cron-name">Dashboard Auto-Update</div>
+                        <div class="cron-schedule">Every 30 minutes</div>
+                    </div>
+                    <span class="status online">Active</span>
+                </div>
             </div>
 
             <!-- Quick Stats -->
@@ -304,7 +315,7 @@
                 </div>
                 <div class="metric">
                     <span class="metric-label">Active Cron Jobs</span>
-                    <span class="metric-value">3</span>
+                    <span class="metric-value">4</span>
                 </div>
                 <div class="metric">
                     <span class="metric-label">Documentation Files</span>
@@ -338,9 +349,23 @@
             </div>
         </div>
 
+        <div class="data-policy">
+            <h3>📋 Data Safety Policy</h3>
+            <ul>
+                <li>✅ ONLY operational status (online/offline, counts, schedules)</li>
+                <li>✅ Project names and public-facing status only</li>
+                <li>✅ Technology stack names (React, Node, etc.)</li>
+                <li>❌ NO API keys or tokens</li>
+                <li>❌ NO database credentials or connection strings</li>
+                <li>❌ NO private client data or contact information</li>
+                <li>❌ NO IP addresses or internal network details</li>
+                <li>❌ NO file paths or system directories</li>
+            </ul>
+        </div>
+
         <footer>
             <p>🏗️ Sardeep CTO Dashboard | Auto-generated by OpenClaw</p>
-            <p>Refresh this page for latest status</p>
+            <p>Auto-refreshes every 5 minutes | Manual refresh for latest</p>
         </footer>
     </div>
 </body>
